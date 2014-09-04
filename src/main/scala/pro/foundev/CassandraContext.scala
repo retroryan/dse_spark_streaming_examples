@@ -1,6 +1,4 @@
-import com.datastax.spark.connector.cql.CassandraConnector
-import org.apache.spark.streaming.StreamingContext
-import org.apache.spark.streaming.dstream.DStream
+package pro.foundev
 
 /**
  * Copyright 2014 Ryan Svihla
@@ -18,13 +16,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
  */
 
-trait TextSocketCapable extends CassandraCapable {
+import com.datastax.spark.connector.CassandraRow
+import com.datastax.spark.connector.cql.CassandraConnector
+import com.datastax.spark.connector.rdd.CassandraRDD
+import org.apache.spark.streaming.StreamingContext
 
-  val hostName = "localhost"
-  val port = 10034
-  def connectToSocket(): (DStream[String], StreamingContext, CassandraConnector) = {
-    val context = connect()
-    val rdd: DStream[String] = context.streamingContext.socketTextStream(hostName,port);
-    (rdd, context.streamingContext, context.connector)
-  }
-}
+class CassandraContext(val connector: CassandraConnector,
+                       val rdd: CassandraRDD[CassandraRow],
+                       val streamingContext: StreamingContext)

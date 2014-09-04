@@ -1,3 +1,5 @@
+package pro.foundev
+
 /**
  * Copyright 2014 Ryan Svihla
 
@@ -14,16 +16,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
  */
 
+import _root_.java.text.SimpleDateFormat
+
 import org.apache.spark.streaming.Seconds
 import org.apache.spark.streaming.StreamingContext._
-import com.datastax.spark.connector.streaming._
 
 object WindowedCalculationsAndEventTriggering extends TextSocketCapable{
 
   def main(args: Array[String]): Unit ={
 
     val (rdd, sparkContext, connector) = connectToSocket()
-    val format = new java.text.SimpleDateFormat("yyyy-MM-dd")
+    val format = new SimpleDateFormat("yyyy-MM-dd")
 
     val transactionList = rdd.map(line => {
      val columns = line.split(",")

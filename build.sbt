@@ -12,6 +12,8 @@ libraryDependencies += "org.apache.spark" % "spark-streaming_2.10" % "0.9.1" % "
 
 libraryDependencies += "com.datastax.spark" %% "spark-cassandra-connector" % "1.0.0-rc5" withSources() withJavadoc()
 
+libraryDependencies += "com.datastax.spark" %% "spark-cassandra-connector-java" % "1.0.0-rc5" withSources() withJavadoc()
+
 resolvers += "Typesafe Repo" at "http://repo.typesafe.com/typesafe/releases/"
 
 libraryDependencies ++= Seq(("com.typesafe.play" %% "play-json" % "2.2.1"))

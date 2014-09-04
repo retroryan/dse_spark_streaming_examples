@@ -1,3 +1,5 @@
+package pro.foundev
+
 /**
  * Copyright 2014 Ryan Svihla
 
@@ -18,6 +20,8 @@ import com.datastax.spark.connector.cql.CassandraConnector
 import com.datastax.spark.connector.streaming._
 import org.apache.spark.SparkConf
 import org.apache.spark.streaming.{Milliseconds, StreamingContext}
+import scala.collection.JavaConversions._
+
 
 trait CassandraCapable {
 
@@ -35,12 +39,17 @@ trait CassandraCapable {
     connector.withSessionDo(session => {
       session.execute(s"create keyspace if not exists ${keySpaceName} with replication = { 'class':'SimpleStrategy', " +
         "'replication_factor':1}")
+      session.execute(s"drop table if exists ${keySpaceName}.${fullTableName}")
       session.execute(s"create table if not exists ${keySpaceName}.${fullTableName} " +
-        "(marketId text, id int, version int, value text, PRIMARY KEY((id), version))")
+        "(userId int, userName text, followers Set<text>, PRIMARY KEY(userId))")
+      val preparedStatement = session.prepare(s"INSERT INTO ${keySpaceName}.${fullTableName} (userId, userName, " +
+        s"followers) values (?,?,?) ")
+      session.execute(preparedStatement.bind(0: Integer, "jsmith", setAsJavaSet(Set("jsmith", "mark", "mike"))))
+      session.execute(preparedStatement.bind(1: Integer, "mark", setAsJavaSet(Set("mark", "mike"))))
+      session.execute(preparedStatement.bind(2: Integer, "mike", setAsJavaSet(Set("jsmith", "mike"))))
     })
 
     val ssc = new StreamingContext(conf, Milliseconds(500))
-    new CassandraContext(connector, ssc.cassandraTable(keySpaceName, fullTableName),
-    ssc)
+    new CassandraContext(connector, ssc.cassandraTable(keySpaceName, fullTableName), ssc)
   }
 }

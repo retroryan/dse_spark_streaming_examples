@@ -1,8 +1,6 @@
-
-
 name := "dse_spark_streaming_examples"
 
-version := "0.1"
+version := "0.2.0"
 
 scalaVersion := "2.10.4"
 
@@ -10,9 +8,13 @@ libraryDependencies += "org.apache.spark" % "spark-core_2.10" % "0.9.1" % "provi
 
 libraryDependencies += "org.apache.spark" % "spark-streaming_2.10" % "0.9.1" % "provided"
 
-libraryDependencies += "com.datastax.spark" %% "spark-cassandra-connector" % "1.0.0-rc5" withSources() withJavadoc()
+libraryDependencies += "org.apache.spark" % "spark-streaming-kafka_2.10" % "0.9.1" % "provided"
 
-libraryDependencies += "com.datastax.spark" %% "spark-cassandra-connector-java" % "1.0.0-rc5" withSources() withJavadoc()
+libraryDependencies += "com.datastax.spark" %% "spark-cassandra-connector" % "1.0.0" withSources() withJavadoc()
+
+libraryDependencies += "com.datastax.spark" %% "spark-cassandra-connector-java" % "1.0.0" withSources() withJavadoc()
+
+libraryDependencies += "net.jpountz.lz4" % "lz4" % "1.2.0"
 
 resolvers += "Typesafe Repo" at "http://repo.typesafe.com/typesafe/releases/"
 

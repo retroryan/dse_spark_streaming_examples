@@ -14,13 +14,18 @@
  * limitations under the License.
  */
 
-package pro.foundev
+package pro.foundev.logging
 
-import com.datastax.spark.connector.CassandraRow
-import com.datastax.spark.connector.cql.CassandraConnector
-import com.datastax.spark.connector.rdd.CassandraRDD
-import org.apache.spark.streaming.StreamingContext
+import play.api.libs.json._
+import play.api.libs.functional.syntax._
 
-class CassandraContext(val connector: CassandraConnector,
-                       val rdd: CassandraRDD[CassandraRow],
-                       val streamingContext: StreamingContext)
+
+class Log(val message: (String, String)) {
+
+  val messageId:String = message._1.toString
+  val messageBody: JsValue = Json.parse(message._2.toString)
+  val serviceName = (messageBody \ ("serviceName")).as[String]
+  val eventType = (messageBody \ ("type")).as[String]
+  val messageText = (messageBody \("text")).as[String]
+
+}

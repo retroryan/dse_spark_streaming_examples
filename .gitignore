@@ -19,3 +19,7 @@ project/plugins/project/
 #intellij
 .idea/
 .iml
+
+#eclipse
+.project
+.classpath
